@@ -82,14 +82,28 @@ def sidebar() -> tuple[str, str, int]:
     return provider, model, top_k
 
 
+
 def get_pipeline(provider: str, model: str, top_k: int) -> RAGPipeline:
+    if "pipeline" not in st.session_state:
+        st.session_state.pipeline = None
+
     key = (provider, model, top_k, id(st.session_state.store))
+
     if st.session_state.get("pipeline_key") != key:
-        pipeline = RAGPipeline(st.session_state.store, get_llm(provider, model), top_k=top_k)
-        if "pipeline" in st.session_state:
-            pipeline.history = st.session_state.pipeline.history
+        old_pipeline = st.session_state.pipeline
+
+        pipeline = RAGPipeline(
+            st.session_state.store,
+            get_llm(provider, model),
+            top_k=top_k,
+        )
+
+        if old_pipeline is not None:
+            pipeline.history = old_pipeline.history
+
         st.session_state.pipeline = pipeline
         st.session_state.pipeline_key = key
+
     return st.session_state.pipeline
 
 

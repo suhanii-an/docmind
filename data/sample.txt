@@ -1,0 +1,1 @@
+DocMind is a document question-answering assistant that uses retrieval-augmented generation. It converts documents into chunks, creates vector embeddings, retrieves relevant passages, and uses a language model to generate answers with source citations.
