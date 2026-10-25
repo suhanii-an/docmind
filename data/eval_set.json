@@ -1,0 +1,8 @@
+[
+  {"question": "What does chunk overlap do?", "expected_keyword": "overlap"},
+  {"question": "Which library from Meta is used for similarity search?", "expected_keyword": "FAISS"},
+  {"question": "How does maximal marginal relevance work?", "expected_keyword": "diversity"},
+  {"question": "What metric rewards relevant chunks near the top?", "expected_keyword": "Reciprocal Rank"},
+  {"question": "How are follow-up questions handled in a chat?", "expected_keyword": "standalone"},
+  {"question": "What is LCEL?", "expected_keyword": "Expression Language"}
+]
