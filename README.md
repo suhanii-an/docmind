@@ -2,6 +2,8 @@
 
 A small RAG project I built to learn LangChain. You put your documents (PDFs, notes, CSVs) in a folder, it indexes them, and then you can ask questions and get answers based on what's actually in those files, along with which file the answer came from.
 
+  **Live demo:** https://docmind-suhani.streamlit.app
+
 ## How it works
 
 1. Documents are loaded and split into chunks
