@@ -29,7 +29,12 @@ def init_state() -> None:
         try:
             st.session_state.store = load_index(embeddings())
         except FileNotFoundError:
-            pass
+            if Path(settings.data_dir).exists():
+                with st.spinner("Building index from sample documents..."):
+                    try:
+                        st.session_state.store = build_index(settings.data_dir, embeddings())
+                    except ValueError:
+                        pass
 
 
 def render_sources(sources) -> None:
@@ -82,28 +87,14 @@ def sidebar() -> tuple[str, str, int]:
     return provider, model, top_k
 
 
-
 def get_pipeline(provider: str, model: str, top_k: int) -> RAGPipeline:
-    if "pipeline" not in st.session_state:
-        st.session_state.pipeline = None
-
     key = (provider, model, top_k, id(st.session_state.store))
-
     if st.session_state.get("pipeline_key") != key:
-        old_pipeline = st.session_state.pipeline
-
-        pipeline = RAGPipeline(
-            st.session_state.store,
-            get_llm(provider, model),
-            top_k=top_k,
-        )
-
-        if old_pipeline is not None:
-            pipeline.history = old_pipeline.history
-
+        pipeline = RAGPipeline(st.session_state.store, get_llm(provider, model), top_k=top_k)
+        if "pipeline" in st.session_state:
+            pipeline.history = st.session_state.pipeline.history
         st.session_state.pipeline = pipeline
         st.session_state.pipeline_key = key
-
     return st.session_state.pipeline
 
 
